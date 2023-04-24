@@ -3,17 +3,23 @@ import sql from 'mssql'
 import fs from 'fs'
 
 class PizzaSerice {
-    GetAll = async () =>{
+    GetAll = async (top,orderField,sortOrder) =>{
         let returnEntity = null;
         
         try{
-            console.log('Estoy en: Pizzaservice.GetAll()')
+            console.log('Estoy en: Pizzaservice.GetAll(top,orderField,sortOrder)')
+            let queryTop = 'top ' + top;
+            let queryOrderField ='order by ' + orderField;
+            let querySortOrder = sortOrder;
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .query('SELECT * FROM Pizzas');
+                                    .query(`SELECT ${top == null ? '' : queryTop } * FROM Pizzas ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`);
             returnEntity = result.recordset;
         }
         catch (error){
+            fs.writeFile('error.txt',error.stack, (err) =>{
+                if (err) throw err;
+            });
             console.log(error)
         }
         return returnEntity;
@@ -31,6 +37,9 @@ class PizzaSerice {
             //console.log(returnEntity)
         }
         catch (error){
+            fs.writeFile('error.txt',error.stack, (err) =>{
+                if (err) throw err;
+            });
             console.log(error)
         }
         //console.log(returnEntity)
@@ -51,6 +60,9 @@ class PizzaSerice {
             returnEntity = result.rowsAffected;
         }
         catch (error){
+            fs.writeFile('error.txt',error.stack, (err) =>{
+                if (err) throw err;
+            });
             console.log(error)
         }
         return returnEntity;
@@ -70,6 +82,9 @@ class PizzaSerice {
             returnEntity = result.recordset[0][0];
         }
         catch (error){
+            fs.writeFile('error.txt',error.stack, (err) =>{
+                if (err) throw err;
+            });
             console.log(error)
         }
         return returnEntity;
@@ -85,6 +100,9 @@ class PizzaSerice {
             rowsAffected = result.rowsAffected;
         }
         catch (error){
+            fs.writeFile('error.txt',error.stack, (err) =>{
+                if (err) throw err;
+            });
             console.log(error)
         }
         return rowsAffected;
