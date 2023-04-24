@@ -1,15 +1,17 @@
 import config from '../../dbconfig.js'
 import sql from 'mssql'
+import fs from 'fs'
 
 class PizzaSerice {
     GetAll = async () =>{
         let returnEntity = null;
-        console.log('Estoy en: Pizzaservice.GetAll()')
+        
         try{
+            console.log('Estoy en: Pizzaservice.GetAll()')
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .query('SELECT * FROM Pizzas');
-            returnEntity = result.recordset[0];
+            returnEntity = result.recordset;
         }
         catch (error){
             console.log(error)
@@ -18,17 +20,20 @@ class PizzaSerice {
     }
     GetByID = async (id) =>{
         let returnEntity = null;
-        console.log('Estoy en: Pizzaservice.GetByID(id)')
+        
         try{
+            console.log('Estoy en: Pizzaservice.GetByID(id)')
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .input('pId', sql.Int, id)
-                                    .query('SELECT * FROM Pizzas WHERE Id = @pId');
-            returnEntity = result.recordset[0][0];
+                                    .query('SELECT * FROM Pizzas WHERE Id = @pId;');
+            returnEntity = result.recordset[0];
+            //console.log(returnEntity)
         }
         catch (error){
             console.log(error)
         }
+        //console.log(returnEntity)
         return returnEntity;
         
     }
@@ -38,12 +43,12 @@ class PizzaSerice {
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pNombre'     , sql.NChar , pizza?.nombre ?? '')
-                                    .input('plibreGluten', sql.Bit   , pizza?.libreGluten ?? false)
-                                    .input('pimporte'    , sql.Float , pizza?.importe ?? 0)
-                                    .input('pdescripcion', sql.NChar , pizza?.descripcion ?? '')
-                                    .query('INSERT INTO Pizzas(Nombre,LibreGluten,Importe,Descripcion)VALUES(@pNombre,@plibreGluten,@pimporte, @pdescripcion');
-            returnEntity = result.recordset[0][0];
+                                    .input('pNombre'     , sql.NChar , pizza?.Nombre ?? '')
+                                    .input('pLibreGluten', sql.Bit   , pizza?.LibreGluten ?? false)
+                                    .input('pImporte'    , sql.Float , pizza?.Importe ?? 0)
+                                    .input('pDescripcion', sql.NChar , pizza?.Descripcion ?? '')
+                                    .query('INSERT INTO Pizzas(Nombre,LibreGluten,Importe,Descripcion)VALUES(@pNombre, @pLibreGluten, @pImporte, @pDescripcion)');
+            returnEntity = result.rowsAffected;
         }
         catch (error){
             console.log(error)
@@ -56,12 +61,12 @@ class PizzaSerice {
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pId'         , sql.Int   , pizza?.id ?? 0)
-                                    .input('pNombre'     , sql.NChar , pizza?.nombre ?? '')
-                                    .input('plibreGluten', sql.Bit   , pizza?.libreGluten ?? false)
-                                    .input('pimporte'    , sql.Float , pizza?.importe ?? 0)
-                                    .input('pdescripcion', sql.NChar , pizza?.descripcion ?? '')
-                                    .query('UPDATE Pizzas SET Nombre = @pNombre,LibreGluten = @plibreGluten,Importe = @pimporte,Descripcion = @pdescripcion WHERE ID = @pId');
+                                    .input('pId'         , sql.Int   , pizza?.Id ?? 0)
+                                    .input('pNombre'     , sql.NChar , pizza?.Nombre ?? '')
+                                    .input('pLibreGluten', sql.Bit   , pizza?.LibreGluten ?? false)
+                                    .input('pImporte'    , sql.Float , pizza?.Importe ?? 0)
+                                    .input('pDescripcion', sql.NChar , pizza?.Descripcion ?? '')
+                                    .query('UPDATE Pizzas SET Nombre = @pNombre,LibreGluten = @pLibreGluten,Importe = @pImporte,Descripcion = @pDescripcion WHERE ID = @pId');
             returnEntity = result.recordset[0][0];
         }
         catch (error){
@@ -76,13 +81,13 @@ class PizzaSerice {
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .input('pId', sql.Int, id)
-                                    .query('Delete * FROM Pizzas WHERE Id = @pId');
+                                    .query('Delete FROM Pizzas WHERE Id = @pId');
             rowsAffected = result.rowsAffected;
         }
         catch (error){
             console.log(error)
         }
-        return returnEntity;
+        return rowsAffected;
     }
 }
 
