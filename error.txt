@@ -1,4 +1,4 @@
-RequestError: Incorrect syntax near the keyword 'FROM'.
+RequestError: Incorrect syntax near '*'.
     at handleError (C:\Users\46916327\OneDrive\aaa\PROGRAMACIÓN\Github\Proyectos-DAI\Pizzas_API_Node.js\node_modules\mssql\lib\tedious\request.js:384:15)
     at Connection.emit (node:events:513:28)
     at Connection.emit (C:\Users\46916327\OneDrive\aaa\PROGRAMACIÓN\Github\Proyectos-DAI\Pizzas_API_Node.js\node_modules\tedious\lib\connection.js:1040:18)
