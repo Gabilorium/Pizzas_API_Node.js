@@ -1,0 +1,25 @@
+2023-05-16T11:53:40.182Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T11:53:46.393Z: se obtuvieron todos los datos del GetById() exitosamente
+2023-05-16T11:55:21.931Z: se obtuvieron todos los datos del GetById() exitosamente
+2023-05-16T11:55:24.595Z: se obtuvieron todos los datos del GetById() exitosamente
+2023-05-16T12:01:16.784Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:01:20.920Z: Error al cargar los objetos de la base de datos en GetAll():RequestError: Incorrect syntax near the keyword 'asc'.
+2023-05-16T12:01:20.923Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:01:40.255Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:01:43.449Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:01:46.458Z: Error al cargar los objetos de la base de datos en GetAll():RequestError: Incorrect syntax near the keyword 'asc'.
+2023-05-16T12:01:46.460Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:02:42.666Z: Error al cargar los objetos de la base de datos en GetAll():RequestError: Incorrect syntax near the keyword 'asc'.
+2023-05-16T12:02:42.667Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:02:50.587Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:02:59.689Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:03:06.602Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:03:11.785Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:05:41.497Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:23:31.714Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:23:37.681Z: Error al cargar los objetos de la base de datos en GetAll():RequestError: Incorrect syntax near the keyword 'desc'.
+2023-05-16T12:23:37.683Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:23:44.824Z: Error al cargar los objetos de la base de datos en GetAll():RequestError: Incorrect syntax near the keyword 'desc'.
+2023-05-16T12:23:44.826Z: se obtuvieron todos los datos del GetAll() exitosamente
+2023-05-16T12:26:57.982Z: Error al cargar los objetos de la base de datos en GetAll():RequestError: Incorrect syntax near the keyword 'desc'.
+2023-05-16T12:26:57.987Z: se obtuvieron todos los datos del GetAll() exitosamente

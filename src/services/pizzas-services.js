@@ -1,6 +1,6 @@
 import config from '../../dbconfig.js'
 import sql from 'mssql'
-import fs from 'fs'
+import log from '../modules/log-helper.js';
 
 class PizzaSerice {
     GetAll = async (top,orderField,sortOrder) =>{
@@ -17,9 +17,7 @@ class PizzaSerice {
             returnEntity = result.recordset;
         }
         catch (error){
-            fs.writeFile('error.txt',error.stack, (err) =>{
-                if (err) throw err;
-            });
+            log('Error al cargar los objetos de la base de datos en GetAll():'+ error)
             console.log(error)
         }
         return returnEntity;
@@ -34,12 +32,10 @@ class PizzaSerice {
                                     .input('pId', sql.Int, id)
                                     .query('SELECT * FROM Pizzas WHERE Id = @pId;');
             returnEntity = result.recordset[0];
-            //console.log(returnEntity)
+            console.log(returnEntity)
         }
         catch (error){
-            fs.writeFile('error.txt',error.stack, (err) =>{
-                if (err) throw err;
-            });
+            log('Error al cargar los objetos de la base de datos en GetById():'+ error)
             console.log(error)
         }
         //console.log(returnEntity)
@@ -60,9 +56,7 @@ class PizzaSerice {
             returnEntity = result.rowsAffected;
         }
         catch (error){
-            fs.writeFile('error.txt',error.stack, (err) =>{
-                if (err) throw err;
-            });
+            log('Error al insertar los objetos de la base de datos en Insert():'+ error)
             console.log(error)
         }
         return returnEntity;
@@ -79,14 +73,14 @@ class PizzaSerice {
                                     .input('pImporte'    , sql.Float , pizza?.Importe ?? 0)
                                     .input('pDescripcion', sql.NChar , pizza?.Descripcion ?? '')
                                     .query('UPDATE Pizzas SET Nombre = @pNombre,LibreGluten = @pLibreGluten,Importe = @pImporte,Descripcion = @pDescripcion WHERE ID = @pId');
-            returnEntity = result.recordset[0][0];
+            returnEntity = result.rowsAffected;
+            console.log(returnEntity)
         }
         catch (error){
-            fs.writeFile('error.txt',error.stack, (err) =>{
-                if (err) throw err;
-            });
+            log('Error al actualizar los objetos de la base de datos en Update():'+ error)
             console.log(error)
         }
+        
         return returnEntity;
     }
     Delete = async (id) =>{
@@ -100,9 +94,7 @@ class PizzaSerice {
             rowsAffected = result.rowsAffected;
         }
         catch (error){
-            fs.writeFile('error.txt',error.stack, (err) =>{
-                if (err) throw err;
-            });
+            log('Error al eliminar los objetos de la base de datos en Delete():'+ error)
             console.log(error)
         }
         return rowsAffected;

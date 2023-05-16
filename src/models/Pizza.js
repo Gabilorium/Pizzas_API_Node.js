@@ -4,11 +4,12 @@ class Pizza{
     LibreGluten;
     Importe;
     Descripcion;
-    constructor(Nombre,  LibreGluten, Importe, Descripcion) {
-        this.Nombre = Nombre;
-        this.LibreGluten = LibreGluten;
-        this.Importe = Importe;
-        this.Descripcion = Descripcion;
+    constructor(Id,Nombre, LibreGluten, Importe, Descripcion) {
+        this.Id             = Id;
+        this.Nombre         = Nombre;
+        this.LibreGluten    = LibreGluten;
+        this.Importe        = Importe;
+        this.Descripcion    = Descripcion;
     }
 }
 

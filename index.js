@@ -3,88 +3,134 @@ import sql from 'mssql';
 import PizzaService from './src/services/pizzas-services.js';
 import Pizza from './src/models/Pizza.js';
 import express from 'express';
+import cors from "cors"
+import log from './src/modules/log-helper.js';
 
 const app  = express();
+app.use(express.json());
+app.use(cors({
+    origin: '*'
+}));
+app.use(express.static('FrontEnd'));
 const port = 3000;
 
+let pool = await sql.connect(config)
+var svc = new PizzaService();
 
-/*let pool = await sql.connect(config)
-let result = await pool.request().query('')
-await GetAll(null,'nombre','desc')
-let NuevaPizza = new Pizza()
-NuevaPizza = await GetByID(1)
-console.log(NuevaPizza);
-NuevaPizza.Importe = NuevaPizza.Importe * 2;
-await Insert(NuevaPizza)*/
 
-app.get('/',(req,res) => {
-    res.send('Hola mundo!')
+app.get('/pizzas/GetAll/', (req,res) =>{
+    
+    let top         = req.query.top
+    let orderField  = req.query.orderField
+    let sortOrder   = req.query.sortOrder
+    try {
+
+        let listadoPizzas = svc.GetAll((top == undefined ? null : top),(orderField == undefined ? null : orderField),(sortOrder == undefined ? null : sortOrder))
+        if (listadoPizzas != null) {
+            listadoPizzas.then(val => {
+                log('se obtuvieron todos los datos del GetAll() exitosamente');
+                res.send(val);
+            })
+        }else{
+            res.send('Algo fallo adentro del try');
+            log('Error al obtener las pizzas: ' + error.message, 'desde Index.js/GetAll()');
+        }
+    } catch (error) {
+        log('Error al obtener las pizzas: ' + error.message, 'desde Index.js/GetAll()');
+        res.send('Algo fallo en el catch');
+    }
 })
 
-// localhost:3000/pizzas?order=importe
-app.get('/pizzas/getAll/:top/:orderField/:sortOrder', async (req,res) =>{
-    let svc = new PizzaService();
 
-    /*let top = req.query.top
-    let orderField = req.query.orderField
-    let sortOrder = req.query.sortOrder*/
-
-    let resul = await svc.GetAll(req.params.top?? null, req.params.orderField?? null, req.params.sortOrder??null)
-    //console.log(resul)
-    res.send(resul)
+app.get('/pizzas/GetById/:id', (req,res) =>{
+    
+    try {
+        let pizzaXID = svc.GetByID(req.params.id);
+        if (pizzaXID != null) {
+            pizzaXID.then(val => {
+                log('se obtuvieron todos los datos del GetById() exitosamente');
+                res.send(val);
+            })
+        }else{
+            res.send('Algo fallo adentro del try');
+            log('Error al obtener las pizzas: ' + error.message, 'desde Index.js/GetbyId('+id+')');
+        }
+    } catch (error) {
+        res.send('Algo fallo en el catch');
+        log('Error al obtener la pizzas: ' + error.message, 'desde Index.js/GetbyId('+id+')');
+    }
 })
 
-/*app.get('/not-found',(req,res) => {
-    res.status(404).send('No se encontró')
+
+
+app.delete('/pizzas/Delete/:id', async function(req,res) {
+    
+    let id = req.params.id
+    try {
+        let rowsAffected = await svc.Delete(id);
+        if (rowsAffected[0] === 1) {
+            res.status(200).send(`<p>Se eliminó la pizza con el ID: ${id}</p>`);
+            log('se pudo borrar el objeto de la base de datos exitosamente');
+        }else{
+            res.status(400).send(`<p>No se borro la pizza con el ID: ${id}</p>`);
+            log('Error al eliminar el ojeto: ' + error.message, 'desde Index.js/Delete('+id+')');
+        }
+    } catch (error) {
+        res.status(404).send('Algo fallo en el catch');
+        log('Error al eliminar el ojeto: ' + error.message, 'desde Index.js/Delete('+id+')');
+    }
 })
 
-app.get('/get-params/:id', (req,res) =>{
-    let parametros = req.query
-    console.log(parametros)
-    res.send('id: ' + req.params.id)
-})*/
 
-app.post({
+app.post('/pizzas/Insert/', async (req,res) =>{
 
+    let body        = req.body;
+    let Nombre      = body.Nombre
+    let LibreGluten = body.LibreGluten
+    let Importe     = body.Importe
+    let Descripcion = body.Descripcion
+
+    try {
+        let pizzaNueva = new Pizza(0,(Nombre == undefined ? null : Nombre),(LibreGluten == undefined ? null : LibreGluten),(Importe == undefined ? null : Importe),(Descripcion == undefined ? null : Descripcion))
+        let rowsAffected = await svc.Insert(pizzaNueva)
+        if (rowsAffected[0] === 1) {
+            res.status(200).send(`Se creo la pizza ${pizzaNueva.Nombre}`);
+            log('se pudo crear el objeto de la base de datos exitosamente');
+        }else{
+            res.status(400).send(`No se creo la pizza`)
+            log('Error al crear el ojeto: ' + error.message, 'desde Index.js/Insert(pizza), el objeto pasado fue: '+ pizzaNueva);
+        }
+    } catch (error) {
+        res.status(404).send(`No se creo la pizza debido a un error`);
+        log('Error al crear el ojeto: ' + error.message, 'desde Index.js/Insert(pizza), el objeto pasado fue: '+ pizzaNueva);
+    }
 })
 
-app.put({
+app.put('/pizzas/Update/', async (req,res) =>{
 
+    let body        = req.body;
+    let Id          = body.Id;
+    let Nombre      = body.Nombre
+    let LibreGluten = body.LibreGluten
+    let Importe     = body.Importe
+    let Descripcion = body.Descripcion
+
+    try {
+        let pizza = new Pizza((Id == undefined ? null : Id),(Nombre == undefined ? null : Nombre),(LibreGluten == undefined ? null : LibreGluten),(Importe == undefined ? null : Importe),(Descripcion == undefined ? null : Descripcion))
+        let rowsAffected = await svc.Update(pizza)
+        if (rowsAffected[0] === 1) {
+            res.status(200).send(`Se modificó la pizza ${pizza.Nombre}`)
+            log('se pudo modificar el objeto de la base de datos exitosamente');
+        }else{
+            res.status(400).send(`No existe esa pizza mi bro`)
+            log('Error al modificar el ojeto: ' + error.message, 'desde Index.js/Update(pizza), el objeto pasado fue: '+ pizza);
+        }
+    } catch (error) {
+        res.status(404).send(`No se modifico la pizza debido a un error`)
+        log('Error al modificar el ojeto: ' + error.message, 'desde Index.js/Update(pizza), el objeto pasado fue: '+ pizza);
+    }
 })
 
 app.listen(port, () =>{
     console.log(`App listening on port ${port}`)
 })
-
-
-/*async function GetAll(top,orderField,sortOrder)
-{
-    let resul = await svc.GetAll(top,orderField,sortOrder)
-    console.log(resul)
-    return resul
-    
-}
-
-async function GetByID(id)
-{
-    let resul = await svc.GetByID(id);
-    console.log(resul);
-    return resul;
-    
-}
-
-async function Insert(pizza)
-{
-    let resul = await svc.Insert(pizza)
-    console.log(resul)
-    return resul
-    
-}
-
-async function Delete(id)
-{
-    let resul = await svc.Delete(id)
-    console.log(resul)
-    return resul
-    
-}*/
