@@ -1,5 +1,5 @@
-import config from './dbconfig.js';
-import sql from 'mssql';
+/*import config from './dbconfig.js';
+import sql from 'mssql';*/
 import PizzaService from './src/services/pizzas-services.js';
 import Pizza from './src/models/Pizza.js';
 import express from 'express';
@@ -7,38 +7,31 @@ import cors from "cors"
 import log from './src/modules/log-helper.js';
 
 const app  = express();
-app.use(express.json());
-app.use(cors({
-    origin: '*'
-}));
-app.use(express.static('FrontEnd'));
 const port = 3000;
+const svc = new PizzaService();
 
-let pool = await sql.connect(config)
-var svc = new PizzaService();
+app.use(cors());
+app.use(express.json());
+app.use(express.static('FrontEnd'));
 
 
-app.get('/pizzas/GetAll/', (req,res) =>{
+//let pool = await sql.connect(config)
+
+
+app.get('/pizzas/GetAll/', async (req,res) =>{
     
     let top         = req.query.top
     let orderField  = req.query.orderField
     let sortOrder   = req.query.sortOrder
-    try {
 
-        let listadoPizzas = svc.GetAll((top == undefined ? null : top),(orderField == undefined ? null : orderField),(sortOrder == undefined ? null : sortOrder))
-        if (listadoPizzas != null) {
-            listadoPizzas.then(val => {
-                log('se obtuvieron todos los datos del GetAll() exitosamente');
-                res.send(val);
-            })
-        }else{
-            res.send('Algo fallo adentro del try');
-            log('Error al obtener las pizzas: ' + error.message, 'desde Index.js/GetAll()');
-        }
-    } catch (error) {
-        log('Error al obtener las pizzas: ' + error.message, 'desde Index.js/GetAll()');
-        res.send('Algo fallo en el catch');
-    }
+    let listadoPizzas = await svc.GetAll((top == undefined ? null : top),(orderField == undefined ? null : orderField),(sortOrder == undefined ? null : sortOrder))
+    
+    /*listadoPizzas.then(val => {
+        log('se obtuvieron todos los datos del GetAll() exitosamente');
+        res.send(val);
+    })*/
+    log('se obtuvieron todos los datos del GetAll() exitosamente');
+    return res.status(200).json(listadoPizzas);
 })
 
 

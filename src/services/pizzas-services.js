@@ -5,20 +5,20 @@ import log from '../modules/log-helper.js';
 class PizzaSerice {
     GetAll = async (top,orderField,sortOrder) =>{
         let returnEntity = null;
-        
+        let queryTop = 'top ' + top;
+        let queryOrderField ='order by ' + orderField;
+        let querySortOrder = sortOrder;
+
         try{
             console.log('Estoy en: Pizzaservice.GetAll(top,orderField,sortOrder)')
-            let queryTop = 'top ' + top;
-            let queryOrderField ='order by ' + orderField;
-            let querySortOrder = sortOrder;
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .query(`SELECT ${top == null ? '' : queryTop } * FROM Pizzas ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`);
             returnEntity = result.recordset;
         }
         catch (error){
-            log('Error al cargar los objetos de la base de datos en GetAll():'+ error)
             console.log(error)
+            log('Error al cargar los objetos de la base de datos en GetAll():', error.message)
         }
         return returnEntity;
     }

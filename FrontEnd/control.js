@@ -2,10 +2,18 @@
 function GetPizzas() {
     const TOPE = document.getElementById('getAlltope').value;
     const ORDER_FIELD = document.getElementById('getAllorderField').value;
-    const SORT_ORDER = document.getElementById('getAllsortOrder').checked;
+    const SORT_ORDER = document.getElementById('getAllsortOrder').value;
+    let callTop = 'top=' + TOPE;
+    let callOrderField ='&orderField=' + ORDER_FIELD;
+    let callSortOrder = '&sortOrder='+SORT_ORDER;
 
-    axios
-    .get(`http://localhost:3000/pizzas/GetAll/?top=${top == undefined ? null : top}&${orderField == undefined ? null : orderField}&${sortOrder == undefined ? null : sortOrder}`)
+    console.log(SORT_ORDER);
+
+    let url = `http://localhost:3000/api/pizzas/GetAll/?${TOPE == '' ? '' : callTop}${ORDER_FIELD == '' ? '' : callOrderField}${SORT_ORDER == '' ? '' : callSortOrder}`;
+    console.log(url)
+
+    axios 
+    .get(url)
     .then((response) => {
         console.log(response)
             const pizzas = response.data;
@@ -41,7 +49,8 @@ function GetPizzas() {
 // Función para obtener una pizza por ID
 function getPizzaById() {
 const pizzaId = document.getElementById('pizzaIdInput').value;
-axios.get(`http://localhost:3000/pizzas/GetById/${pizzaId}`)
+let url =`http://localhost:3000/api/pizzas/GetById/${pizzaId}`;
+axios.get(url)
     .then(response => {
         const pizza = response.data;
         
@@ -76,7 +85,9 @@ axios.get(`http://localhost:3000/pizzas/GetById/${pizzaId}`)
 // Función para eliminar una pizza
 function deletePizza() {
 const pizzaId = document.getElementById('deletePizzaIdInput').value;
-axios.delete(`/pizzas/Delete/${pizzaId}`)
+let url =`http://localhost:3000/api/pizzas/Delete/${pizzaId}`;
+
+axios.delete(url)
 .then(response => {
     const deleteResult = document.getElementById('deleteResult');
     deleteResult.textContent = response.data;
@@ -101,7 +112,8 @@ const pizza = {
     Descripcion: description
 };
 
-axios.post('http://localhost:3000/pizzas/Insert/', pizza)
+let url ='http://localhost:3000/api/pizzas/Insert/';
+axios.post(url, pizza)
     .then(response => {
     const addResult = document.getElementById('addResult');
     addResult.textContent = response.data;
@@ -127,8 +139,8 @@ const pizza = {
     Importe: price,
     Descripcion: description
 };
-
-axios.put('http://localhost:3000/pizzas/Update/', pizza)
+let url = 'http://localhost:3000/api/pizzas/Update/';
+axios.put(url, pizza)
     .then(response => {
     const updateResult = document.getElementById('updateResult');
     updateResult.textContent = response.data;

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node Index.js"
+    "start": "node Index.js",
+    "server-router": "node server-router.js",
+    "server-middleware": "node server-middleware.js"
   },
   "author": "Gabriel Chediex",
   "license": "ISC",
