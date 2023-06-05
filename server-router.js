@@ -1,6 +1,9 @@
 import express from "express";
 import cors    from "cors";
-import router from "./src/controllers/pizzaController.js";
+import PizzaRouter from "./src/controllers/pizzaController.js";
+import IngXPizzaRouter from "./src/controllers/pizzaXIngredienteController.js";
+import IngredienteRouter from "./src/controllers/IngredientesController.js";
+import UnidadesRouter from "./src/controllers/UnidadesController.js";
 
 const app  = express();
 const port = 3000;
@@ -11,7 +14,10 @@ app.use(express.json());
 app.use(express.static('FrontEnd'));
 
 //Endpoint
-app.use("/api/pizzas", router);
+app.use("/Pizzas/", PizzaRouter);
+app.use("/IngXPizzas/",IngXPizzaRouter)
+app.use("/Ingredientes/",IngredienteRouter)
+app.use("/Unidades/",UnidadesRouter)
 
 //Donde se levanto el sitio
 app.listen(port, () =>{

@@ -8,7 +8,7 @@ IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE [name] = N'Pizzas')
 BEGIN
 	PRINT 'Creando Login'
 	CREATE LOGIN [Pizzas] WITH 
-		PASSWORD=N'VivaLaMuzza123', 
+		PASSWORD=N'p1zz@s', 
 		DEFAULT_DATABASE=[DAI-Pizzas], 
 		CHECK_EXPIRATION=OFF, 
 		CHECK_POLICY=OFF

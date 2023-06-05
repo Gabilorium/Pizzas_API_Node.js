@@ -2,18 +2,20 @@ import config from '../../dbconfig.js'
 import sql from 'mssql'
 import log from '../modules/log-helper.js';
 
-class PizzaSerice {
+class PizzaService {
     GetAll = async (top,orderField,sortOrder) =>{
         let returnEntity = null;
         let queryTop = 'top ' + top;
         let queryOrderField ='order by ' + orderField;
         let querySortOrder = sortOrder;
+        
+        let query = `SELECT ${top == null ? '' : queryTop } * FROM Pizzas ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`;
 
         try{
             console.log('Estoy en: Pizzaservice.GetAll(top,orderField,sortOrder)')
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .query(`SELECT ${top == null ? '' : queryTop } * FROM Pizzas ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`);
+                                    .query(query);
             returnEntity = result.recordset;
         }
         catch (error){
@@ -24,13 +26,13 @@ class PizzaSerice {
     }
     GetByID = async (id) =>{
         let returnEntity = null;
-        
+        let query = 'SELECT * FROM Pizzas WHERE Id = @pId;'
         try{
             console.log('Estoy en: Pizzaservice.GetByID(id)')
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .input('pId', sql.Int, id)
-                                    .query('SELECT * FROM Pizzas WHERE Id = @pId;');
+                                    .query(query);
             returnEntity = result.recordset[0];
             console.log(returnEntity)
         }
@@ -44,7 +46,9 @@ class PizzaSerice {
     }
     Insert = async (pizza) =>{
         let returnEntity = null;
-        console.log('Estoy en: Pizzaservice.Insert(pizza)')
+        let query = ` 
+        INSERT INTO Pizzas(Nombre,LibreGluten,Importe,Descripcion)
+                    VALUES(@pNombre, @pLibreGluten, @pImporte, @pDescripcion)`
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
@@ -52,7 +56,7 @@ class PizzaSerice {
                                     .input('pLibreGluten', sql.Bit   , pizza?.LibreGluten ?? false)
                                     .input('pImporte'    , sql.Float , pizza?.Importe ?? 0)
                                     .input('pDescripcion', sql.NChar , pizza?.Descripcion ?? '')
-                                    .query('INSERT INTO Pizzas(Nombre,LibreGluten,Importe,Descripcion)VALUES(@pNombre, @pLibreGluten, @pImporte, @pDescripcion)');
+                                    .query(query);
             returnEntity = result.rowsAffected;
         }
         catch (error){
@@ -61,18 +65,24 @@ class PizzaSerice {
         }
         return returnEntity;
     }
-    Update = async (pizza) =>{
+    Update = async (id, pizza) =>{
         let returnEntity = null;
+        let query = ` 
+                UPDATE Pizzas SET Nombre = @pNombre,
+                LibreGluten = @pLibreGluten,
+                Importe = @pImporte,
+                Descripcion = @pDescripcion 
+                WHERE ID = @pId`
         console.log('Estoy en: Pizzaservice.Update(pizza)')
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pId'         , sql.Int   , pizza?.Id ?? 0)
+                                    .input('pId'         , sql.Int   , id ?? 0)
                                     .input('pNombre'     , sql.NChar , pizza?.Nombre ?? '')
                                     .input('pLibreGluten', sql.Bit   , pizza?.LibreGluten ?? false)
                                     .input('pImporte'    , sql.Float , pizza?.Importe ?? 0)
                                     .input('pDescripcion', sql.NChar , pizza?.Descripcion ?? '')
-                                    .query('UPDATE Pizzas SET Nombre = @pNombre,LibreGluten = @pLibreGluten,Importe = @pImporte,Descripcion = @pDescripcion WHERE ID = @pId');
+                                    .query(query);
             returnEntity = result.rowsAffected;
             console.log(returnEntity)
         }
@@ -85,12 +95,17 @@ class PizzaSerice {
     }
     Delete = async (id) =>{
         let rowsAffected = 0;
+        let query = `
+            Delete FROM Pizzas WHERE Id = @pId; 
+            DECLARE @MAXID INT SET @MAXID = (SELECT MAX(ID) FROM Pizzas); 
+            DECLARE @sql NVARCHAR(MAX) SET @sql = 'DBCC CHECKIDENT (''Pizzas'', RESEED, ' + CAST(@MAXID AS NVARCHAR(10)) + ')'  EXEC(@sql)
+        `
         console.log('Estoy en: Pizzaservice.Delete(id)')
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .input('pId', sql.Int, id)
-                                    .query("Delete FROM Pizzas WHERE Id = @pId; DECLARE @MAXID INT SET @MAXID = (SELECT MAX(ID) FROM Pizzas); DECLARE @sql NVARCHAR(MAX) SET @sql = 'DBCC CHECKIDENT (''Pizzas'', RESEED, ' + CAST(@MAXID AS NVARCHAR(10)) + ')'  EXEC(@sql)");
+                                    .query(query);
             rowsAffected = result.rowsAffected;
         }
         catch (error){
@@ -101,4 +116,4 @@ class PizzaSerice {
     }
 }
 
-export default PizzaSerice
+export default PizzaService

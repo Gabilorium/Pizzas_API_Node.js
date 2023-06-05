@@ -1,10 +1,10 @@
 import {Router} from 'express';
 import PizzaService from '../services/pizzas-services.js';
 
-const router = Router();
+const PizzaRouter = Router();
 const svc = new PizzaService();
 
-router.get('/GetAll/', async (req,res) =>{
+PizzaRouter.get('/GetAll/', async (req,res) =>{
     
     let top         = req.query.top
     let orderField  = req.query.orderField
@@ -15,11 +15,11 @@ router.get('/GetAll/', async (req,res) =>{
 })
 
 
-router.get('/GetById/:id', async (req,res) =>{
+PizzaRouter.get('/GetById/:id', async (req,res) =>{
     let respuesta;
     const pizzaXID = await svc.GetByID(req.params.id);
     if (pizzaXID != null) {
-        respuesta = res.status(200).json(pizza);
+        respuesta = res.status(200).json(pizzaXID);
     }else{
         respuesta = res.status(404).send("Esta pizza no esxiste");
     }
@@ -28,7 +28,7 @@ router.get('/GetById/:id', async (req,res) =>{
 
 
 
-router.delete('/Delete/:id', async function(req,res) {
+PizzaRouter.delete('/Delete/:id', async function(req,res) {
     
     let id = req.params.id
     const pizza = await svc.Delete(id);
@@ -37,7 +37,7 @@ router.delete('/Delete/:id', async function(req,res) {
 })
 
 
-router.post('/Insert/', async (req,res) =>{
+PizzaRouter.post('/Insert', async (req,res) =>{
 
     let body = req.body;
     const pizzaNueva = await svc.Insert(body);
@@ -45,12 +45,13 @@ router.post('/Insert/', async (req,res) =>{
     return res.status(201).json(pizzaNueva);
 })
 
-router.put('/Update/', async (req,res) =>{
+PizzaRouter.put('/Update/:id', async (req,res) =>{
 
     let body = req.body;
-    const pizza = await svc.Update(body);
+    let id = req.params.id
+    const pizza = await svc.Update(id,body);
 
     return res.status(200).json(pizza);
 })
 
-export default router;
+export default PizzaRouter;

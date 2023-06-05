@@ -2,21 +2,17 @@ import config from '../../dbconfig.js'
 import sql from 'mssql'
 import log from '../modules/log-helper.js';
 
-
-class IngredienteXPizzaService {
-    
-    GetAll = async () =>{
+class IngredienteService {
+    GetAll = async (top,orderField,sortOrder) =>{
         let returnEntity = null;
-        
         let queryTop = 'top ' + top;
         let queryOrderField ='order by ' + orderField;
         let querySortOrder = sortOrder;
         
         let query = `SELECT ${top == null ? '' : queryTop } * FROM Ingredientes ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`;
 
-        console.log('Estoy en: IngredienteXPizzaService.GetAll()')
-
         try{
+            console.log('Estoy en: IngredienteService.GetAll(top,orderField,sortOrder)')
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .query(query);
@@ -29,48 +25,36 @@ class IngredienteXPizzaService {
         return returnEntity;
     }
 
-    GetByIdPizza = async  (id) =>{
+    GetByID = async (id) =>{
         let returnEntity = null;
-        let query= `
-        SELECT 
-                IngredientesXPizzas.Id          AS Id,
-                Ingredientes.Id                 AS IdIngrediente,
-                Ingredientes.Nombre             AS Nombre,
-                IngredientesXPizzas.Cantidad    AS Cantidad,
-                Unidades.Id                     AS IdUnidad,
-                Unidades.Nombre                 AS Unidad
-        From Ingredientes
-        INNER JOIN IngredientesXPizzas on IngredientesXPizzas.IdIngrediente = Ingredientes.Id
-        INNER JOIN Unidades on IngredientesXPizzas.IdUnidad = Unidades.ID
-        Where IngredientesXPizzas.IdPizza = @pid
-        `;
+        let query = 'SELECT * FROM Ingredientes WHERE Id = @pId;'
         try{
+            console.log('Estoy en: IngredienteService.GetByID(id)')
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .input('pId', sql.Int, id)
                                     .query(query);
-            returnEntity = result.recordset;
+            returnEntity = result.recordset[0];
+            console.log(returnEntity)
         }
         catch (error){
+            log('Error al cargar los objetos de la base de datos en GetById():'+ error)
             console.log(error)
-            log('Error al cargar los objetos de la base de datos en GetAll():', error.message)
         }
+        //console.log(returnEntity)
         return returnEntity;
+        
     }
 
-    Insert = async (IngxPizza) =>{
+    Insert = async (ingrediente) =>{
         let returnEntity = null;
         let query = ` 
-        INSERT INTO IngredientesXPizzas(IdPizza,IdIngrediente,Cantidad,IdUnidad)
-                    VALUES(@pIdPizza, @pIdIngrediente, @pCantidad, @pIdUnidad)`;
-        console.log("Insert")
+        INSERT INTO Ingredientes(Nombre)
+                    VALUES(@pNombre)`
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pIdPizza'     , sql.Int , IngxPizza?.IdPizza ?? 0)
-                                    .input('pIdIngrediente', sql.Int   , IngxPizza?.IdIngrediente ?? 0)
-                                    .input('pCantidad'    , sql.Int , IngxPizza?.Cantidad ?? 0)
-                                    .input('pIdUnidad', sql.Int , IngxPizza?.IdUnidad ?? 0)
+                                    .input('pNombre'     , sql.NChar , ingrediente?.Nombre ?? '')
                                     .query(query);
             returnEntity = result.rowsAffected;
         }
@@ -84,11 +68,11 @@ class IngredienteXPizzaService {
     Delete = async (id) =>{
         let rowsAffected = 0;
         let query = `
-            Delete FROM IngredientesXPizzas WHERE Id = @pId; 
-            DECLARE @MAXID INT SET @MAXID = (SELECT MAX(ID) FROM IngredientesXPizzas); 
-            DECLARE @sql NVARCHAR(MAX) SET @sql = 'DBCC CHECKIDENT (''IngredientesXPizzas'', RESEED, ' + CAST(@MAXID AS NVARCHAR(10)) + ')'  EXEC(@sql)
+            Delete FROM Ingredientes WHERE Id = @pId; 
+            DECLARE @MAXID INT SET @MAXID = (SELECT MAX(ID) FROM Ingredientes); 
+            DECLARE @sql NVARCHAR(MAX) SET @sql = 'DBCC CHECKIDENT (''Ingredientes'', RESEED, ' + CAST(@MAXID AS NVARCHAR(10)) + ')'  EXEC(@sql)
         `
-        console.log('Estoy en: Pizzaservice.Delete(id)')
+        console.log('Estoy en: IngredienteService.Delete(id)')
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
@@ -103,24 +87,17 @@ class IngredienteXPizzaService {
         return rowsAffected;
     }
 
-    Update = async (id,IngxPizza) =>{
+    Update = async (id, ingrediente) =>{
         let returnEntity = null;
         let query = ` 
-                UPDATE IngredientesXPizzas SET 
-                IdPizza         = @pIdPizza,
-                IdIngrediente   = @pIdIngrediente,
-                Cantidad        = @pCantidad,
-                IdUnidad        = @pIdUnidad 
-                WHERE ID        = @pId`
-        console.log('Estoy en: Pizzaservice.Update(pizza)')
+                UPDATE Ingredientes SET Nombre = @pNombre,
+                WHERE ID = @pId`
+        console.log('Estoy en: IngredienteService.Update(ingrediente)')
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .input('pId'         , sql.Int   , id ?? 0)
-                                    .input('pIdPizza'     , sql.Int , IngxPizza?.IdPizza ?? 0)
-                                    .input('pIdIngrediente', sql.Int   , IngxPizza?.IdIngrediente ?? 0)
-                                    .input('pCantidad'    , sql.Int , IngxPizza?.Cantidad ?? 0)
-                                    .input('pIdUnidad', sql.Int , IngxPizza?.IdUnidad ?? 0)
+                                    .input('pNombre'     , sql.NChar , ingrediente?.Nombre ?? '')
                                     .query(query);
             returnEntity = result.rowsAffected;
             console.log(returnEntity)
@@ -133,5 +110,4 @@ class IngredienteXPizzaService {
         return returnEntity;
     }
 }
-
-export default IngredienteXPizzaService;
+export default IngredienteService
