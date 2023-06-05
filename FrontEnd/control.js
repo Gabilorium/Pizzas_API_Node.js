@@ -1,5 +1,7 @@
 //Getall
 function GetPizzas() {
+    const pizzasTable = document.getElementById('pizzasTable');
+    pizzasTable.innerHTML = "";
     const TOPE = document.getElementById('getAlltope').value;
     const ORDER_FIELD = document.getElementById('getAllorderField').value;
     const SORT_ORDER = document.getElementById('getAllsortOrder').value;
@@ -17,8 +19,6 @@ function GetPizzas() {
     .then((response) => {
         console.log(response)
             const pizzas = response.data;
-            const pizzasTable = document.getElementById('pizzasTable');
-            pizzasTable.innerHTML = '';
             pizzas.map(pizza => {
                 //Tabla    
                 const tr = document.createElement('tr');

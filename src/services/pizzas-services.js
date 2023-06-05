@@ -90,7 +90,7 @@ class PizzaSerice {
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .input('pId', sql.Int, id)
-                                    .query('Delete FROM Pizzas WHERE Id = @pId');
+                                    .query("Delete FROM Pizzas WHERE Id = @pId; DECLARE @MAXID INT SET @MAXID = (SELECT MAX(ID) FROM Pizzas); DECLARE @sql NVARCHAR(MAX) SET @sql = 'DBCC CHECKIDENT (''Pizzas'', RESEED, ' + CAST(@MAXID AS NVARCHAR(10)) + ')'  EXEC(@sql)");
             rowsAffected = result.rowsAffected;
         }
         catch (error){

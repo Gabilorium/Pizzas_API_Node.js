@@ -1,5 +1,5 @@
 /*import config from './dbconfig.js';
-import sql from 'mssql';*/
+import sql from 'mssql';
 import PizzaService from './src/services/pizzas-services.js';
 import Pizza from './src/models/Pizza.js';
 import express from 'express';
@@ -29,7 +29,7 @@ app.get('/pizzas/GetAll/', async (req,res) =>{
     /*listadoPizzas.then(val => {
         log('se obtuvieron todos los datos del GetAll() exitosamente');
         res.send(val);
-    })*/
+    })
     log('se obtuvieron todos los datos del GetAll() exitosamente');
     return res.status(200).json(listadoPizzas);
 })
@@ -126,4 +126,4 @@ app.put('/pizzas/Update/', async (req,res) =>{
 
 app.listen(port, () =>{
     console.log(`App listening on port ${port}`)
-})
+})*/
