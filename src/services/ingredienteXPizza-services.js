@@ -5,7 +5,7 @@ import log from '../modules/log-helper.js';
 
 class IngredienteXPizzaService {
     
-    GetAll = async () =>{
+    GetAll = async (top,orderField,sortOrder) =>{
         let returnEntity = null;
         
         let queryTop = 'top ' + top;

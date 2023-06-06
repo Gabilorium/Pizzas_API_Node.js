@@ -1,53 +1,39 @@
-// npm run server-middleware
-import express from "express";
-import cors    from "cors";
+const apiKeyMiddleware = function (req, res, next){  
+    const apiKey = req.headers['apikey'];
 
-//
-// Variables/Constantes del Modulo
-//
-const app  = express();
-const port = 5000;                  // Puerto en donde levanta express (5000)
+    if (apiKey && apiKey === '123456789'){
+      next(); // Continúa con el siguiente middleware
+    } 
+    else{
+      res.status(401).send('Unauthorized, es necesario una ApiKey válida.'); // Devuelve un código de estado 401 y un mensaje de error
+    }
+} 
 
-//
-// funcion de Middleware (notar que hay un next!)
-//
-const horaMiddleware = function (req, res, next) {
-  console.log('Middleware (Antes): ' + new Date().toISOString());
+function CreatedByMiddleware(req, res, next) {
+  const nombreAlumno = "Tu Nombre"; // Reemplaza con tu nombre
 
-  // Ir al proximo middleware
-  next();
-  console.log('Middleware (Despues): ' + new Date().toISOString());
+  // Agrega el encabezado "CreatedBy" al objeto de respuesta
+  res.setHeader("CreatedBy", nombreAlumno);
+
+  next(); // Continúa con el siguiente middleware
 }
 
-const agregarAlgoMiddleware = function (req, res, next) {
+const tiempoDeEjecucionMiddleware = function (req, res, next) {
+  const inicio = performance.now(); // Obtiene el tiempo de inicio en milisegundos
 
-  // Ir al proximo middleware
-  next();
+  // Sobrescribe la función 'res.end' para calcular el tiempo transcurrido y mostrarlo por consola
+  const antiguoResEnd = res.end;
+  res.end = function () {
+    const fin = performance.now(); // Obtiene el tiempo de fin en milisegundos
+    const tiempoTranscurrido = fin - inicio; // Calcula el tiempo transcurrido en milisegundos
+    console.log(`Tiempo de ejecución: ${tiempoTranscurrido} ms`);
+
+    // Llama a la función 'res.end' original para finalizar la respuesta
+    return antiguoResEnd.apply(this, arguments);
+  };
+
+  next(); // Llama a la siguiente función de middleware
 }
 
-//
-// Inclusion de los Middlewares
-//
-app.use(cors());                    // agrego el middleware de CORS
-app.use(express.json());            // agrego el middleware para parsear y comprender JSON
-app.use(horaMiddleware);
 
-// 
-// Endpoints
-//
-app.get('/', (req, res) => {
-  console.log('EndPoint app.get/: ' + new Date().toISOString());
-  res.send('Respuesta del EndPoint!' + req.startDate);
-})
-
-app.get('/hola', (req, res) => {
-  console.log('EndPoint app.get/hola: ' + new Date().toISOString());
-  res.send('Respuesta del EndPoint!' + req.startDate);
-})
-
-//
-// Levanto el servidor WEB (pongo a escuchar)
-//
-app.listen(port, () => {
-  console.log(`"server-middleware" Listening on port ${port}`);
-})
+export {apiKeyMiddleware, tiempoDeEjecucionMiddleware, CreatedByMiddleware}

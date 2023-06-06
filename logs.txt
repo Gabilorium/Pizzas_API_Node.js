@@ -154,3 +154,5 @@
 2023-06-05T13:27:30.401Z: Error al actualizar los objetos de la base de datos en Update():RequestError: Incorrect syntax near the keyword 'WHERE'. - undefined
 2023-06-05T13:28:32.704Z: Error al actualizar los objetos de la base de datos en Update():RequestError: Incorrect syntax near the keyword 'WHERE'. - undefined
 2023-06-05T13:30:10.780Z: Error al actualizar los objetos de la base de datos en Update():RequestError: Incorrect syntax near the keyword 'WHERE'. - undefined
+2023-06-06T11:35:36.743Z: Error al cargar los objetos de la base de datos en GetAll(): - Login failed for user 'Pizzas'.
+2023-06-06T11:36:05.197Z: Error al cargar los objetos de la base de datos en GetAll(): - Login failed for user 'Pizzas'.
