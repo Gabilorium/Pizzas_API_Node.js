@@ -4,7 +4,7 @@ import PizzaRouter from "./src/controllers/pizzaController.js";
 import IngXPizzaRouter from "./src/controllers/pizzaXIngredienteController.js";
 import IngredienteRouter from "./src/controllers/IngredientesController.js";
 import UnidadesRouter from "./src/controllers/UnidadesController.js";
-import {apiKeyMiddleware, tiempoDeEjecucionMiddleware, CreatedByMiddleware} from "./server-middleware.js";
+import {apiKeyMiddleware, tiempoDeEjecucionMiddleware, CreatedByMiddleware} from "./middlewares.js";
 
 const app  = express();
 const port = 3000;
