@@ -1,6 +1,7 @@
 import config from '../../dbconfig.js'
 import sql from 'mssql'
 import log from '../modules/log-helper.js';
+import IngredienteXPizzaService from './ingredienteXPizza-services.js';
 
 class PizzaService {
     GetAll = async (top,orderField,sortOrder) =>{
@@ -24,9 +25,11 @@ class PizzaService {
         }
         return returnEntity;
     }
-    GetByID = async (id) =>{
+    GetByID = async (id, incluirIngredientes) =>{
         let returnEntity = null;
+        incluirIngredientes = incluirIngredientes || false; 
         let query = 'SELECT * FROM Pizzas WHERE Id = @pId;'
+        
         try{
             console.log('Estoy en: Pizzaservice.GetByID(id)')
             let pool = await sql.connect(config);
@@ -34,7 +37,12 @@ class PizzaService {
                                     .input('pId', sql.Int, id)
                                     .query(query);
             returnEntity = result.recordset[0];
-            console.log(returnEntity)
+
+            if ((returnEntity != null) && (incluirIngredientes))
+            {
+                let svc = new IngredienteXPizzaService()
+                returnEntity.Ingredientes = await svc.GetByIdPizza(id )
+            }
         }
         catch (error){
             log('Error al cargar los objetos de la base de datos en GetById():'+ error)
