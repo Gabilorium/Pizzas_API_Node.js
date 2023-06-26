@@ -2,7 +2,6 @@ import config from '../../dbconfig.js'
 import sql from 'mssql'
 import log from '../modules/log-helper.js';
 import IngredienteXPizzaService from './ingredienteXPizza-services.js';
-import UnidadesService from './unidades-services.js';
 
 class PizzaService {
     GetAll = async (top,orderField,sortOrder,incluirIngredientes,incluirUnidades) =>{

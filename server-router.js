@@ -12,9 +12,10 @@ const port = 3000;
 //MidleWares
 app.use(cors());
 app.use(express.json());
-app.use(apiKeyMiddleware);
+/*app.use(apiKeyMiddleware);
 app.use(tiempoDeEjecucionMiddleware);
-app.use(CreatedByMiddleware)
+app.use(CreatedByMiddleware)*/
+app.use();
 app.use(express.static('FrontEnd'));
 
 //Endpoint
