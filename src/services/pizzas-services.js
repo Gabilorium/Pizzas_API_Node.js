@@ -2,13 +2,16 @@ import config from '../../dbconfig.js'
 import sql from 'mssql'
 import log from '../modules/log-helper.js';
 import IngredienteXPizzaService from './ingredienteXPizza-services.js';
+import UnidadesService from './unidades-services.js';
 
 class PizzaService {
-    GetAll = async (top,orderField,sortOrder) =>{
+    GetAll = async (top,orderField,sortOrder,incluirIngredientes,incluirUnidades) =>{
         let returnEntity = null;
         let queryTop = 'top ' + top;
         let queryOrderField ='order by ' + orderField;
         let querySortOrder = sortOrder;
+        incluirIngredientes = incluirIngredientes || false; 
+
         
         let query = `SELECT ${top == null ? '' : queryTop } * FROM Pizzas ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`;
 
@@ -18,6 +21,11 @@ class PizzaService {
             let result = await pool.request()
                                     .query(query);
             returnEntity = result.recordset;
+            if ((returnEntity != null) && (incluirIngredientes))
+            {
+                let svc = new IngredienteXPizzaService()
+                returnEntity.Ingredientes = await svc.GetByIdPizza(id )
+            }
         }
         catch (error){
             console.log(error)
