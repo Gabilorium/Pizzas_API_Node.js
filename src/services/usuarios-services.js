@@ -18,6 +18,7 @@ class UsuariosServices{
                 returnEntity = await this.getByUsernamePassword(usuario.UserName,usuario.Password);
             }
         }
+        console.log(token);
         return returnEntity;
     }
 

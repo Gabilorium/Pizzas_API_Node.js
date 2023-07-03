@@ -4,12 +4,14 @@ import log from '../modules/log-helper.js';
 import IngredienteXPizzaService from './ingredienteXPizza-services.js';
 
 class PizzaService {
-    GetAll = async (top,orderField,sortOrder,incluirIngredientes,incluirUnidades) =>{
+    GetAll = async (top,orderField,sortOrder,incluirIngredientes, incluirUnidades) =>{
         let returnEntity = null;
         let queryTop = 'top ' + top;
         let queryOrderField ='order by ' + orderField;
         let querySortOrder = sortOrder;
+        let svc = new IngredienteXPizzaService();
         incluirIngredientes = incluirIngredientes || false; 
+        incluirUnidades = incluirUnidades || false; 
 
         
         let query = `SELECT ${top == null ? '' : queryTop } * FROM Pizzas ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`;
@@ -20,10 +22,16 @@ class PizzaService {
             let result = await pool.request()
                                     .query(query);
             returnEntity = result.recordset;
-            if ((returnEntity != null) && (incluirIngredientes))
-            {
-                let svc = new IngredienteXPizzaService()
-                returnEntity.Ingredientes = await svc.GetByIdPizza(id )
+            if (incluirIngredientes || incluirUnidades) {
+                if ((returnEntity != null) && (returnEntity.length > 0))
+                {
+                    for (let i = 0; i < returnEntity.length; i++) {
+                        if ((returnEntity != null) && (incluirIngredientes))
+                        {
+                            returnEntity[i].Ingredientes = await svc.GetByIdPizza(returnEntity[i].Id,incluirUnidades)
+                        }
+                    }
+                }
             }
         }
         catch (error){
@@ -32,9 +40,12 @@ class PizzaService {
         }
         return returnEntity;
     }
-    GetByID = async (id, incluirIngredientes) =>{
+    GetByID = async (id, incluirIngredientes, incluirUnidades) =>{
         let returnEntity = null;
+        let svc = new IngredienteXPizzaService();
         incluirIngredientes = incluirIngredientes || false; 
+        incluirUnidades = incluirUnidades || false;
+
         let query = 'SELECT * FROM Pizzas WHERE Id = @pId;'
         
         try{
@@ -45,10 +56,14 @@ class PizzaService {
                                     .query(query);
             returnEntity = result.recordset[0];
 
-            if ((returnEntity != null) && (incluirIngredientes))
-            {
-                let svc = new IngredienteXPizzaService()
-                returnEntity.Ingredientes = await svc.GetByIdPizza(id )
+            console.log(incluirIngredientes)
+            if (incluirIngredientes || incluirUnidades) {
+               
+                if ((returnEntity != null) && (incluirIngredientes))
+                {
+                    returnEntity.Ingredientes = await svc.GetByIdPizza(returnEntity.Id,incluirUnidades)
+                }
+
             }
         }
         catch (error){

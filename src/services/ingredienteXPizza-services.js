@@ -1,6 +1,7 @@
 import config from '../../dbconfig.js'
 import sql from 'mssql'
 import log from '../modules/log-helper.js';
+import UnidadesService from './unidades-services.js';
 
 
 class IngredienteXPizzaService {
@@ -11,7 +12,6 @@ class IngredienteXPizzaService {
         let queryTop = 'top ' + top;
         let queryOrderField ='order by ' + orderField;
         let querySortOrder = sortOrder;
-        
         let query = `SELECT ${top == null ? '' : queryTop } * FROM Ingredientes ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`;
 
         console.log('Estoy en: IngredienteXPizzaService.GetAll()')
@@ -29,8 +29,11 @@ class IngredienteXPizzaService {
         return returnEntity;
     }
 
-    GetByIdPizza = async  (id) =>{
+    GetByIdPizza = async  (id, incluirUnidades) =>{
         let returnEntity = null;
+        let svc = new UnidadesService();
+        incluirUnidades = incluirUnidades || false;
+
         let query= `
         SELECT 
                 IngredientesXPizzas.Id          AS Id,
@@ -50,6 +53,17 @@ class IngredienteXPizzaService {
                                     .input('pId', sql.Int, id)
                                     .query(query);
             returnEntity = result.recordset;
+            if (incluirUnidades) {
+                if ((returnEntity != null) && (returnEntity.length > 0))
+                {
+                    for (let i = 0; i < returnEntity.length; i++) {
+                        if ((returnEntity != null) && (incluirUnidades))
+                        {
+                            returnEntity[i].Unidades = await svc.GetByID(returnEntity[i].Id)
+                        }
+                    }
+                }
+            }
         }
         catch (error){
             console.log(error)

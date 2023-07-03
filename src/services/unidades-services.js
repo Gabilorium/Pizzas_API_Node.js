@@ -34,8 +34,7 @@ class UnidadesService {
             let result = await pool.request()
                                     .input('pId', sql.Int, id)
                                     .query(query);
-            returnEntity = result.recordset[0];
-            console.log(returnEntity)
+            returnEntity = result.recordset;
         }
         catch (error){
             log('Error al cargar los objetos de la base de datos en GetById():'+ error)

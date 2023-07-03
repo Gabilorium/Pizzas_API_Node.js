@@ -156,3 +156,28 @@
 2023-06-05T13:30:10.780Z: Error al actualizar los objetos de la base de datos en Update():RequestError: Incorrect syntax near the keyword 'WHERE'. - undefined
 2023-06-06T11:35:36.743Z: Error al cargar los objetos de la base de datos en GetAll(): - Login failed for user 'Pizzas'.
 2023-06-06T11:36:05.197Z: Error al cargar los objetos de la base de datos en GetAll(): - Login failed for user 'Pizzas'.
+2023-07-03T12:31:28.116Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:31:38.321Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:32:24.436Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:33:19.251Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:34:01.219Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:34:52.102Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:36:16.431Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:36:36.370Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:36:47.690Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:39:41.975Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:39:57.238Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:40:53.072Z: Error al cargar los objetos de la base de datos en GetAll(): - id is not defined
+2023-07-03T12:42:41.143Z: Error al cargar los objetos de la base de datos en GetAll(): - retuid is not defined
+2023-07-03T12:42:52.194Z: Error al cargar los objetos de la base de datos en GetAll(): - retuid is not defined
+2023-07-03T13:05:22.460Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.463Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.468Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.471Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.473Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.475Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.476Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.478Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.481Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:05:22.485Z: Error al cargar los objetos de la base de datos en GetAll(): - incluirIngredientes is not defined
+2023-07-03T13:16:06.032Z: Error al cargar los objetos de la base de datos en GetById():ReferenceError: svc is not defined - undefined

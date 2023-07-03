@@ -6,10 +6,15 @@ const svc = new PizzaService();
 
 PizzaRouter.get('/GetAll/', async (req,res) =>{
     
-    let top         = req.query.top
-    let orderField  = req.query.orderField
-    let sortOrder   = req.query.sortOrder
-    const listadoPizzas = await svc.GetAll((top == undefined ? null : top),(orderField == undefined ? null : orderField),(sortOrder == undefined ? null : sortOrder))
+    let top                     = req.query.top
+    let orderField              = req.query.orderField
+    let sortOrder               = req.query.sortOrder
+    let incluirIngredientes     = (typeof req.query.incluirIngredientes !== 'undefined' && req.query.incluirIngredientes.toLowerCase() === 'true')
+    let incluirUnidades         = (typeof req.query.incluirUnidades !== 'undefined' && req.query.incluirUnidades.toLowerCase() === 'true')
+
+
+    console.log(typeof(incluirIngredientes))
+    const listadoPizzas = await svc.GetAll((top == undefined ? null : top),(orderField == undefined ? null : orderField),(sortOrder == undefined ? null : sortOrder),incluirIngredientes,incluirUnidades)
     
     return res.status(200).json(listadoPizzas);
 })
@@ -17,7 +22,10 @@ PizzaRouter.get('/GetAll/', async (req,res) =>{
 
 PizzaRouter.get('/GetById/:id', async (req,res) =>{
     let respuesta;
-    const pizzaXID = await svc.GetByID(req.params.id);
+    let incluirIngredientes     = (typeof req.query.incluirIngredientes !== 'undefined' && req.query.incluirIngredientes.toLowerCase() === 'true')
+    let incluirUnidades         = (typeof req.query.incluirUnidades !== 'undefined' && req.query.incluirUnidades.toLowerCase() === 'true')
+    
+    const pizzaXID = await svc.GetByID(req.params.id, incluirIngredientes,incluirUnidades);
     if (pizzaXID != null) {
         respuesta = res.status(200).json(pizzaXID);
     }else{
