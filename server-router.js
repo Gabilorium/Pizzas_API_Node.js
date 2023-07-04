@@ -5,7 +5,7 @@ import IngXPizzaRouter from "./src/controllers/pizzaXIngredienteController.js";
 import IngredienteRouter from "./src/controllers/IngredientesController.js";
 import UnidadesRouter from "./src/controllers/UnidadesController.js";
 import UsuariosRouter from "./src/controllers/UsuariosController.js";
-import {apiKeyMiddleware, tiempoDeEjecucionMiddleware, CreatedByMiddleware} from "./middlewares.js";
+import AutenticationMiddleware from "./middlewares.js";
 
 const app  = express();
 const port = 5000;
@@ -16,8 +16,8 @@ app.use(express.json());
 /*app.use(apiKeyMiddleware);
 app.use(tiempoDeEjecucionMiddleware);
 app.use(CreatedByMiddleware)*/
-//app.use();
-app.use(express.static('FrontEnd'));
+app.use(AutenticationMiddleware.RequiereAutenticacion());
+app.use('/Front', express.static('FrontEnd'));
 
 //Endpoint
 app.use("/api/Pizzas/", PizzaRouter);

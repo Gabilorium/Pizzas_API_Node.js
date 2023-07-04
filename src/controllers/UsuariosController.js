@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import UsuariosServices from '../services/usuarios-services';
+import UsuariosServices from '../services/usuarios-services.js';
 
 const UsuariosRouter = Router();
 const svc = new UsuariosServices();

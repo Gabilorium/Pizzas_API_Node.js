@@ -1,4 +1,7 @@
-const apiKeyMiddleware = function (req, res, next){  
+import UsuariosServices from "./src/services/usuarios-services.js"
+import log from "./src/modules/log-helper.js"
+
+/*const apiKeyMiddleware = function (req, res, next){  
     const apiKey = req.headers['apikey'];
 
     if (apiKey && apiKey === '123456789'){
@@ -33,7 +36,39 @@ const tiempoDeEjecucionMiddleware = function (req, res, next) {
   };
 
   next(); // Llama a la siguiente función de middleware
+}*/
+
+class AutenticationMiddleware {
+  RequiereAutenticacion = async function (req,res,next){
+    let token;
+    let usuario;
+    let currentDate = new Date();
+    let tokenExpirationDate = null;
+    
+    if (req.path.toLowerCase().startsWith("/front/")) return next();
+    if (req.path.toLowerCase().startsWith("api/usuarios/login")) return next();
+    if (req.path.toLowerCase().startsWith("/api/ingxpizzas/")) return next();
+    if (req.path.toLowerCase().startsWith("/api/ingredientes/")) return next();
+    if (req.path.toLowerCase().startsWith("/api/unidades/")) return next();
+    
+    token = req.get('token');
+    
+    if((token == null)||(token == 'undefined')){
+      res.status(401).send('401 Unauthorized, invalid token')
+    }else{
+      let svc = new UsuariosServices();
+      usuario = await svc.getByToken(token);
+      if(usuario != null){
+        tokenExpirationDate = new Date(usuario.TokenExpirationDate);
+        if(currentDate < tokenExpirationDate){
+          next();
+        }else{
+          req.status(401).send('401 Unauthorized, token expired')
+        }
+      }else{
+        res.status(401).send("401 Unauthorizer, invalid token/user")
+      } 
+    }
+  }
 }
-
-
-export {apiKeyMiddleware, tiempoDeEjecucionMiddleware, CreatedByMiddleware}
+export default AutenticationMiddleware;

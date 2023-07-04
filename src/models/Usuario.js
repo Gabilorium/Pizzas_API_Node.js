@@ -1,4 +1,4 @@
-class Usuarios{
+class Usuario{
     Id;
     Nombre;  
     UserNAme;
