@@ -9,6 +9,7 @@ import AutenticationMiddleware from "./middlewares.js";
 
 const app  = express();
 const port = 5000;
+const middle = new AutenticationMiddleware();
 
 //MidleWares
 app.use(cors());
@@ -16,7 +17,7 @@ app.use(express.json());
 /*app.use(apiKeyMiddleware);
 app.use(tiempoDeEjecucionMiddleware);
 app.use(CreatedByMiddleware)*/
-app.use(AutenticationMiddleware.RequiereAutenticacion());
+app.use(middle.RequiereAutenticacion);
 app.use('/Front', express.static('FrontEnd'));
 
 //Endpoint

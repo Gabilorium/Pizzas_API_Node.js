@@ -11,9 +11,13 @@ class UsuariosServices{
         let returnEntity = null;
         let token;
 
+        console.log("HOla")
         returnEntity = await this.getByUsernamePassword(usuario.UserName,usuario.Password);
+        console-log('returnEntity');        
+        console-log(returnEntity);
+
         if (returnEntity != null) {
-            token = await this.refreshTokenById(returnEntity.id);
+            token = await this.refreshTokenById(returnEntity.Id);
             if (token != null) {
                 returnEntity = await this.getByUsernamePassword(usuario.UserName,usuario.Password);
             }
@@ -24,13 +28,17 @@ class UsuariosServices{
 
     getByUsernamePassword = async(userName, password) =>{
         let returnEntity = null;
+        
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
                                     .input('pUserName', sql.VarChar, userName)
                                     .input('pPassword', sql.VarChar, password)
-                                    .query(`SELECT * FROM ${NOMBRE_TABLA} WHERE UserName = @pUserName`);
+                                    .query(`SELECT * FROM ${NOMBRE_TABLA} WHERE UserName = @pUserName and  Password = @pPassword`);
             returnEntity = result.recordset[0];
+            console.log('ok polshu');
+            console.log(returnEntity);
+
         }
         catch(error)
         {
@@ -63,15 +71,16 @@ class UsuariosServices{
         try{
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pId'                    ,sql.Int        , id)
+                                    .input('pId'                    , sql.Int       , id)
                                     .input('pToken'                 , sql.VarChar   , token)
                                     .input('pTokenExpirationDate'   , sql.VarChar   , expirationDate.toISOString())
-                                    .query(` UPDATE ${NOMBRE_TABLA} SET
+                                    .query(` UPDATE ${NOMBRE_TABLA} SET 
                                                 Token               = @pToken,
                                                 TokenExpirationDate = @pTokenExpirationDate
                                                 WHERE Id = @pId`);
 
             rowsAffected = result.rowsAffected;
+            console.log(rowsAffected)
         }
         catch(error)
         {

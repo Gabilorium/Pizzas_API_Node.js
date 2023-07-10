@@ -183,3 +183,50 @@
 2023-07-03T13:16:06.032Z: Error al cargar los objetos de la base de datos en GetById():ReferenceError: svc is not defined - undefined
 2023-07-04T12:13:06.354Z: Error al cargar los objetos de la base de datos en GetAll(): - Login failed for user 'Pizzas'.
 2023-07-04T12:13:15.545Z: Error al cargar los objetos de la base de datos en GetAll(): - Login failed for user 'Pizzas'.
+2023-07-10T11:29:26.460Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:29:27.798Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:29:28.094Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:29:29.564Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:29:34.435Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:29:35.029Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:29:35.435Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:31:01.260Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:31:28.546Z: Error al refrescar el token: - Incorrect syntax near '('.
+2023-07-10T11:34:41.642Z: Error al refrescar el token: - Validation failed for parameter 'pToken'. Invalid string.
+2023-07-10T11:35:31.834Z: Error al refrescar el token: - Validation failed for parameter 'pToken'. Invalid string.
+2023-07-10T11:37:11.840Z: Error al refrescar el token: - Validation failed for parameter 'pToken'. Invalid string.
+2023-07-10T11:37:43.891Z: Error al refrescar el token: - Validation failed for parameter 'pToken'. Invalid string.
+2023-07-10T11:38:02.507Z: Error al refrescar el token: - Validation failed for parameter 'pToken'. Invalid string.
+2023-07-10T11:38:21.582Z: Error al refrescar el token: - Validation failed for parameter 'pToken'. Invalid string.
+2023-07-10T11:38:34.409Z: Error al refrescar el token: - Validation failed for parameter 'pToken'. Invalid string.
+2023-07-10T11:38:46.838Z: Error al refrescar el token: - Validation failed for parameter 'pToken'. Invalid string.
+2023-07-10T11:45:23.698Z: Error al refrescar el token: - token.toISOString is not a function
+2023-07-10T11:47:36.620Z: returnEntity - undefined
+2023-07-10T11:47:36.621Z: [object Object] - undefined
+2023-07-10T11:47:46.847Z: [object Object] - undefined
+2023-07-10T11:47:46.846Z: returnEntity - undefined
+2023-07-10T11:48:24.878Z: returnEntity - undefined
+2023-07-10T11:48:24.879Z: [object Object] - undefined
+2023-07-10T11:49:37.597Z: returnEntity - undefined
+2023-07-10T11:49:37.597Z: [object Object] - undefined
+2023-07-10T11:49:37.598Z: returnEntity - undefined
+2023-07-10T11:49:37.598Z: [object Object] - undefined
+2023-07-10T11:49:44.300Z: returnEntity - undefined
+2023-07-10T11:49:44.300Z: [object Object] - undefined
+2023-07-10T11:50:11.902Z: returnEntity - undefined
+2023-07-10T11:50:11.902Z: [object Object] - undefined
+2023-07-10T11:51:17.470Z: returnEntity - undefined
+2023-07-10T11:51:17.470Z: [object Object] - undefined
+2023-07-10T11:51:35.489Z: returnEntity - undefined
+2023-07-10T11:51:35.489Z: [object Object] - undefined
+2023-07-10T11:52:55.859Z: returnEntity - undefined
+2023-07-10T11:52:55.859Z: Error al obtener el username: - Incorrect syntax near ','.
+2023-07-10T11:52:55.859Z: null - undefined
+2023-07-10T11:53:23.968Z: [object Object] - undefined
+2023-07-10T11:53:23.968Z: returnEntity - undefined
+2023-07-10T11:54:10.006Z: returnEntity - undefined
+2023-07-10T11:54:10.006Z: [object Object] - undefined
+2023-07-10T11:55:29.470Z: returnEntity - undefined
+2023-07-10T11:55:29.470Z: [object Object] - undefined
+2023-07-10T11:55:34.327Z: returnEntity - undefined
+2023-07-10T11:55:34.327Z: [object Object] - undefined

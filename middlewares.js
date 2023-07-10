@@ -46,10 +46,11 @@ class AutenticationMiddleware {
     let tokenExpirationDate = null;
     
     if (req.path.toLowerCase().startsWith("/front/")) return next();
-    if (req.path.toLowerCase().startsWith("api/usuarios/login")) return next();
+    if (req.path.toLowerCase().startsWith("/api/usuarios/login")) return next();
     if (req.path.toLowerCase().startsWith("/api/ingxpizzas/")) return next();
     if (req.path.toLowerCase().startsWith("/api/ingredientes/")) return next();
     if (req.path.toLowerCase().startsWith("/api/unidades/")) return next();
+ 
     
     token = req.get('token');
     
