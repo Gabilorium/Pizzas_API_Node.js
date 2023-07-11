@@ -17,7 +17,7 @@ app.use(express.json());
 /*app.use(apiKeyMiddleware);
 app.use(tiempoDeEjecucionMiddleware);
 app.use(CreatedByMiddleware)*/
-app.use(middle.RequiereAutenticacion);
+//app.use(middle.RequiereAutenticacion);
 app.use('/Front', express.static('FrontEnd'));
 
 //Endpoint

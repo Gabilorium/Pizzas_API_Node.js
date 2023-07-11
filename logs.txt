@@ -230,3 +230,7 @@
 2023-07-10T11:55:29.470Z: [object Object] - undefined
 2023-07-10T11:55:34.327Z: returnEntity - undefined
 2023-07-10T11:55:34.327Z: [object Object] - undefined
+2023-07-11T11:48:23.767Z: Error al cargar los objetos de la base de datos en GetAll(): - Incorrect syntax near 'by'.
+2023-07-11T11:48:32.101Z: Error al cargar los objetos de la base de datos en GetAll(): - Incorrect syntax near 'by'.
+2023-07-11T11:53:39.970Z: [object Object] - undefined
+2023-07-11T11:53:39.970Z: returnEntity - undefined

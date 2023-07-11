@@ -3,6 +3,8 @@ import sql from 'mssql'
 import log from '../modules/log-helper.js';
 import UnidadesService from './unidades-services.js';
 
+const NOMBRE_TABLA =    'Ingredientes';
+const NOMBRE_SERVICE =  'PizzaService';
 
 class IngredienteXPizzaService {
     
@@ -12,7 +14,10 @@ class IngredienteXPizzaService {
         let queryTop = 'top ' + top;
         let queryOrderField ='order by ' + orderField;
         let querySortOrder = sortOrder;
-        let query = `SELECT ${top == null ? '' : queryTop } * FROM Ingredientes ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder}`;
+        let query = `SELECT ${top == null ? '' : queryTop } * FROM Ingredientes
+                    INNER JOIN IngredientesXPizzas on IngredientesXPizzas.IdIngrediente = Ingredientes.Id
+                    INNER JOIN Unidades on IngredientesXPizzas.IdUnidad = Unidades.ID
+                    ${orderField == null ? '' : queryOrderField} ${sortOrder == null ? '' : querySortOrder} `
 
         console.log('Estoy en: IngredienteXPizzaService.GetAll()')
 

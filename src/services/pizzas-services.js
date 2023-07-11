@@ -2,13 +2,24 @@ import config from '../../dbconfig.js'
 import sql from 'mssql'
 import log from '../modules/log-helper.js';
 import IngredienteXPizzaService from './ingredienteXPizza-services.js';
+import CommonServices from './common-services.js';
 
-class PizzaService {
+
+const NOMBRE_TABLA =    'Pizzas';
+const NOMBRE_SERVICE =  'PizzaService';
+
+class PizzaService extends CommonServices{
+    constructor(){
+        super(NOMBRE_TABLA,NOMBRE_SERVICE)
+
+    }
+
     GetAll = async (top,orderField,sortOrder,incluirIngredientes, incluirUnidades) =>{
         let returnEntity = null;
         let queryTop = 'top ' + top;
         let queryOrderField ='order by ' + orderField;
         let querySortOrder = sortOrder;
+        console.log(super.GetAll(top,orderField,sortOrder));
         let svc = new IngredienteXPizzaService();
         incluirIngredientes = incluirIngredientes || false; 
         incluirUnidades = incluirUnidades || false; 
